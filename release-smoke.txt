@@ -1,0 +1,7 @@
+Starting: Intent { cmp=com.twtrubiks.clockstandby/.MainActivity }
+Status: ok
+Activity: com.twtrubiks.clockstandby/.MainActivity
+ThisTime: 1479
+TotalTime: 1479
+WaitTime: 1485
+Complete

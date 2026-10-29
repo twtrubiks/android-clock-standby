@@ -1,0 +1,222 @@
+--------- beginning of main
+10-29 03:04:59.377  3762  3762 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 03:04:59.378  3762  3762 D AndroidRuntime: CheckJNI is OFF
+10-29 03:04:59.390  3762  3762 W art     : Unexpected CPU variant for X86 using defaults: x86_64
+10-29 03:04:59.392  3762  3762 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+10-29 03:04:59.400  3762  3762 E memtrack: Couldn't load memtrack module (No such file or directory)
+10-29 03:04:59.400  3762  3762 E android.os.Debug: failed to load memtrack module: -2
+10-29 03:04:59.400  3762  3762 I Radio-JNI: register_android_hardware_Radio DONE
+10-29 03:04:59.403  3762  3762 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+--------- beginning of system
+10-29 03:04:59.406  1615  1626 I ActivityManager: START u0 {flg=0x10000000 cmp=com.twtrubiks.clockstandby/.MainActivity} from uid 2000 on display 0
+10-29 03:04:59.414  3772  3772 W art     : Unexpected CPU variant for X86 using defaults: x86_64
+10-29 03:04:59.421  1615  1627 I ActivityManager: Start proc 3772:com.twtrubiks.clockstandby/u0a62 for activity com.twtrubiks.clockstandby/.MainActivity
+10-29 03:04:59.505  1303  1326 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+10-29 03:04:59.580  1303  1326 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+10-29 03:04:59.582  3772  3772 D         : HostConnection::get() New Host Connection established 0x7f00121dc760, tid 3772
+10-29 03:04:59.625  2300  2378 D EGL_emulation: eglMakeCurrent: 0x7f0014c37c20: ver 3 0 (tinfo 0x7f0014c0cae0)
+10-29 03:04:59.697  3772  3777 I art     : Do partial code cache collection, code=21KB, data=29KB
+10-29 03:04:59.698  3772  3777 I art     : After code cache collection, code=21KB, data=29KB
+10-29 03:04:59.698  3772  3777 I art     : Increasing code cache capacity to 128KB
+10-29 03:04:59.756  3772  3777 I art     : Do partial code cache collection, code=62KB, data=53KB
+10-29 03:04:59.756  3772  3777 I art     : After code cache collection, code=49KB, data=44KB
+10-29 03:04:59.756  3772  3777 I art     : Increasing code cache capacity to 256KB
+10-29 03:05:00.230  3772  3788 D         : HostConnection::get() New Host Connection established 0x7f0014c1b540, tid 3788
+10-29 03:05:00.263  1303  3259 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+10-29 03:05:00.313  3772  3788 I OpenGLRenderer: Initialized EGL, version 1.4
+10-29 03:05:00.313  3772  3788 D OpenGLRenderer: Swap behavior 1
+10-29 03:05:00.315  3772  3788 D EGL_emulation: eglCreateContext: 0x7f0014c420a0: maj 3 min 0 rcv 3
+10-29 03:05:00.316  3772  3788 D EGL_emulation: eglMakeCurrent: 0x7f0014c420a0: ver 3 0 (tinfo 0x7f0014c0c380)
+10-29 03:05:00.317  3772  3788 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008cdf
+10-29 03:05:00.350  3772  3788 E eglCodecCommon: glUtilsParamSize: unknow param 0x00008824
+10-29 03:05:00.365  1615  1629 W BroadcastQueue: Permission Denial: broadcasting Intent { act=android.intent.action.BATTERY_CHANGED flg=0x60000010 (has extras) } from null (pid=-1, uid=-1) requires com.twtrubiks.clockstandby.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION due to registered receiver BroadcastFilter{e108739 u0 ReceiverList{b4f5300 3772 com.twtrubiks.clockstandby/10062/u0 remote:ef46583}}
+10-29 03:05:00.366  3772  3772 I Choreographer: Skipped 45 frames!  The application may be doing too much work on its main thread.
+10-29 03:05:00.369  3772  3777 I art     : Do full code cache collection, code=121KB, data=109KB
+10-29 03:05:00.369  3772  3777 I art     : After code cache collection, code=112KB, data=82KB
+10-29 03:05:00.392  3772  3777 I art     : Do partial code cache collection, code=112KB, data=88KB
+10-29 03:05:00.393  3772  3777 I art     : After code cache collection, code=112KB, data=88KB
+10-29 03:05:00.393  3772  3777 I art     : Increasing code cache capacity to 512KB
+10-29 03:05:00.403  3772  3788 D EGL_emulation: eglMakeCurrent: 0x7f0014c420a0: ver 3 0 (tinfo 0x7f0014c0c380)
+10-29 03:05:00.739  1303  1328 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+10-29 03:05:00.889  1615  1636 I ActivityManager: Displayed com.twtrubiks.clockstandby/.MainActivity: +1s479ms
+10-29 03:05:00.890  3762  3762 D AndroidRuntime: Shutting down VM
+10-29 03:05:00.897  3772  3772 I Choreographer: Skipped 30 frames!  The application may be doing too much work on its main thread.
+10-29 03:05:01.068  3772  3777 I art     : Compiler allocated 4MB to compile boolean qv0.a(java.util.Set)
+10-29 03:05:01.072  3792  3792 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 03:05:01.073  3792  3792 D AndroidRuntime: CheckJNI is OFF
+10-29 03:05:01.091  3792  3792 W art     : Unexpected CPU variant for X86 using defaults: x86_64
+10-29 03:05:01.094  3792  3792 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+10-29 03:05:01.110  3792  3792 E memtrack: Couldn't load memtrack module (No such file or directory)
+10-29 03:05:01.110  3792  3792 E android.os.Debug: failed to load memtrack module: -2
+10-29 03:05:01.110  3792  3792 I Radio-JNI: register_android_hardware_Radio DONE
+10-29 03:05:01.115  3792  3792 D AndroidRuntime: Calling main entry com.android.commands.wm.Wm
+10-29 03:05:01.189  1615  1636 I WindowManager: Destroying surface Surface(name=Starting com.twtrubiks.clockstandby) called by com.android.server.wm.WindowStateAnimator.destroySurface:2014 com.android.server.wm.WindowStateAnimator.destroySurfaceLocked:881 com.android.server.wm.WindowState.destroyOrSaveSurface:2073 com.android.server.wm.AppWindowToken.destroySurfaces:363 com.android.server.wm.WindowStateAnimator.finishExit:565 com.android.server.wm.WindowStateAnimator.stepAnimationLocked:491 com.android.server.wm.WindowAnimator.updateWindowsLocked:303 com.android.server.wm.WindowAnimator.animateLocked:704 
+10-29 03:05:01.242  3792  3792 D AndroidRuntime: Shutting down VM
+10-29 03:05:01.577  3772  3777 I art     : Compiler allocated 5MB to compile java.lang.Object l.g(java.lang.Object)
+10-29 03:05:01.702  3772  3777 I art     : Do full code cache collection, code=252KB, data=207KB
+10-29 03:05:01.702  3772  3777 I art     : After code cache collection, code=224KB, data=161KB
+10-29 03:05:02.604  1615  1626 I WindowManager: Destroying surface Surface(name=com.android.launcher3/com.android.launcher3.Launcher) called by com.android.server.wm.WindowStateAnimator.destroySurface:2014 com.android.server.wm.WindowStateAnimator.destroySurfaceLocked:881 com.android.server.wm.WindowState.destroyOrSaveSurface:2073 com.android.server.wm.AppWindowToken.destroySurfaces:363 com.android.server.wm.AppWindowToken.notifyAppStopped:389 com.android.server.wm.WindowManagerService.notifyAppStopped:4456 com.android.server.am.ActivityStack.activityStoppedLocked:1252 com.android.server.am.ActivityManagerService.activityStopped:6903 
+10-29 03:05:03.005  3772  3777 I art     : Do partial code cache collection, code=242KB, data=195KB
+10-29 03:05:03.006  3772  3777 I art     : After code cache collection, code=241KB, data=195KB
+10-29 03:05:03.006  3772  3777 I art     : Increasing code cache capacity to 1024KB
+10-29 03:05:04.333  1303  1326 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+10-29 03:05:04.341  1303  1328 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+10-29 03:05:04.346  3805  3805 D         : HostConnection::get() New Host Connection established 0x7a078b02d4e0, tid 3805
+10-29 03:05:04.784  3809  3809 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 03:05:04.785  3809  3809 D AndroidRuntime: CheckJNI is OFF
+10-29 03:05:04.797  3809  3809 W art     : Unexpected CPU variant for X86 using defaults: x86_64
+10-29 03:05:04.799  3809  3809 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+10-29 03:05:04.807  3809  3809 E memtrack: Couldn't load memtrack module (No such file or directory)
+10-29 03:05:04.807  3809  3809 E android.os.Debug: failed to load memtrack module: -2
+10-29 03:05:04.807  3809  3809 I Radio-JNI: register_android_hardware_Radio DONE
+10-29 03:05:04.810  3809  3809 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+10-29 03:05:04.814  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=1152.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=103790, downTime=103790, deviceId=0, source=0x1002 }
+10-29 03:05:04.817  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1152.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=103790, downTime=103790, deviceId=0, source=0x1002 }
+10-29 03:05:04.820  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1126.08, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=103799, downTime=103799, deviceId=0, source=0x1002 }
+10-29 03:05:04.838  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1074.24, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=103817, downTime=103817, deviceId=0, source=0x1002 }
+10-29 03:05:04.857  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1019.52, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=103836, downTime=103836, deviceId=0, source=0x1002 }
+10-29 03:05:04.866  3772  3777 I art     : Compiler allocated 5MB to compile java.lang.Object c.g(java.lang.Object)
+10-29 03:05:04.871  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=979.2, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=103850, downTime=103850, deviceId=0, source=0x1002 }
+10-29 03:05:04.890  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=924.48, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=103869, downTime=103869, deviceId=0, source=0x1002 }
+10-29 03:05:04.934  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=797.76, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=103913, downTime=103913, deviceId=0, source=0x1002 }
+10-29 03:05:04.979  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=668.16003, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=103958, downTime=103958, deviceId=0, source=0x1002 }
+10-29 03:05:05.028  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=527.04, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=104007, downTime=104007, deviceId=0, source=0x1002 }
+10-29 03:05:05.073  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=397.44, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=104052, downTime=104052, deviceId=0, source=0x1002 }
+10-29 03:05:05.118  3809  3809 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=288.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=104097, downTime=104097, deviceId=0, source=0x1002 }
+10-29 03:05:05.125  3809  3809 D AndroidRuntime: Shutting down VM
+10-29 03:05:05.252  3772  3777 I art     : Do full code cache collection, code=508KB, data=427KB
+10-29 03:05:05.252  3772  3777 I art     : After code cache collection, code=452KB, data=328KB
+10-29 03:05:05.450  3772  3820 D ProfileInstaller: Installing profile for com.twtrubiks.clockstandby
+10-29 03:05:05.491  3772  3777 I art     : Do partial code cache collection, code=485KB, data=388KB
+10-29 03:05:05.491  3772  3777 I art     : After code cache collection, code=474KB, data=379KB
+10-29 03:05:05.491  3772  3777 I art     : Increasing code cache capacity to 2MB
+10-29 03:05:05.669  3772  3777 I art     : Compiler allocated 9MB to compile java.lang.Object o3.d(java.lang.Object, java.lang.Object)
+10-29 03:05:07.600  1615  1626 I ActivityManager: Killing 1916:com.android.settings/1000 (adj 906): empty #17
+10-29 03:05:07.651  1615  2045 D GraphicsStats: Buffer count: 4
+10-29 03:05:07.651  1615  1667 D ActivityManager: cleanUpApplicationRecord -- 1916
+10-29 03:05:08.166  1303  1962 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+10-29 03:05:08.167  1303  1326 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+10-29 03:05:08.170  3823  3823 D         : HostConnection::get() New Host Connection established 0x7da974a2d4e0, tid 3823
+10-29 03:05:08.453  3826  3826 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 03:05:08.454  3826  3826 D AndroidRuntime: CheckJNI is OFF
+10-29 03:05:08.466  3826  3826 W art     : Unexpected CPU variant for X86 using defaults: x86_64
+10-29 03:05:08.469  3826  3826 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+10-29 03:05:08.476  3826  3826 E memtrack: Couldn't load memtrack module (No such file or directory)
+10-29 03:05:08.476  3826  3826 E android.os.Debug: failed to load memtrack module: -2
+10-29 03:05:08.477  3826  3826 I Radio-JNI: register_android_hardware_Radio DONE
+10-29 03:05:08.480  3826  3826 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+10-29 03:05:08.484  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=1152.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107461, downTime=107461, deviceId=0, source=0x1002 }
+10-29 03:05:08.486  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1152.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107461, downTime=107461, deviceId=0, source=0x1002 }
+10-29 03:05:08.504  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1088.64, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107483, downTime=107483, deviceId=0, source=0x1002 }
+10-29 03:05:08.521  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1039.68, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107500, downTime=107500, deviceId=0, source=0x1002 }
+10-29 03:05:08.539  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=987.83997, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107518, downTime=107518, deviceId=0, source=0x1002 }
+10-29 03:05:08.555  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=944.64, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107533, downTime=107533, deviceId=0, source=0x1002 }
+10-29 03:05:08.580  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=872.64, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107558, downTime=107558, deviceId=0, source=0x1002 }
+10-29 03:05:08.613  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=774.72, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107592, downTime=107592, deviceId=0, source=0x1002 }
+10-29 03:05:08.665  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=627.83997, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107643, downTime=107643, deviceId=0, source=0x1002 }
+10-29 03:05:08.738  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=414.71997, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107717, downTime=107717, deviceId=0, source=0x1002 }
+10-29 03:05:08.770  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=322.56, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107749, downTime=107749, deviceId=0, source=0x1002 }
+10-29 03:05:08.815  3826  3826 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=288.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=107793, downTime=107793, deviceId=0, source=0x1002 }
+10-29 03:05:08.821  3826  3826 D AndroidRuntime: Shutting down VM
+10-29 03:05:11.863  1303  1962 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+10-29 03:05:11.864  1303  1326 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+10-29 03:05:11.865  3838  3838 D         : HostConnection::get() New Host Connection established 0x7f0dcb02d4e0, tid 3838
+10-29 03:05:12.138  3841  3841 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 03:05:12.139  3841  3841 D AndroidRuntime: CheckJNI is OFF
+10-29 03:05:12.151  3841  3841 W art     : Unexpected CPU variant for X86 using defaults: x86_64
+10-29 03:05:12.153  3841  3841 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+10-29 03:05:12.160  3841  3841 E memtrack: Couldn't load memtrack module (No such file or directory)
+10-29 03:05:12.160  3841  3841 E android.os.Debug: failed to load memtrack module: -2
+10-29 03:05:12.161  3841  3841 I Radio-JNI: register_android_hardware_Radio DONE
+10-29 03:05:12.164  3841  3841 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+10-29 03:05:12.166  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=1152.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111143, downTime=111143, deviceId=0, source=0x1002 }
+10-29 03:05:12.168  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1152.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111143, downTime=111143, deviceId=0, source=0x1002 }
+10-29 03:05:12.170  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1134.72, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111149, downTime=111149, deviceId=0, source=0x1002 }
+10-29 03:05:12.188  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1085.76, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111166, downTime=111166, deviceId=0, source=0x1002 }
+10-29 03:05:12.205  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=1033.92, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111184, downTime=111184, deviceId=0, source=0x1002 }
+10-29 03:05:12.222  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=987.83997, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111200, downTime=111200, deviceId=0, source=0x1002 }
+10-29 03:05:12.258  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=881.28, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111237, downTime=111237, deviceId=0, source=0x1002 }
+10-29 03:05:12.292  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=783.36, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111271, downTime=111271, deviceId=0, source=0x1002 }
+10-29 03:05:12.332  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=668.16003, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111311, downTime=111311, deviceId=0, source=0x1002 }
+10-29 03:05:12.379  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=532.80005, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111358, downTime=111358, deviceId=0, source=0x1002 }
+10-29 03:05:12.429  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_MOVE, actionButton=0, id[0]=0, x[0]=388.8, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111408, downTime=111408, deviceId=0, source=0x1002 }
+10-29 03:05:12.479  3841  3841 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=288.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=111458, downTime=111458, deviceId=0, source=0x1002 }
+10-29 03:05:12.532  3841  3841 D AndroidRuntime: Shutting down VM
+10-29 03:05:12.700  3851  3851 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 03:05:12.702  3851  3851 D AndroidRuntime: CheckJNI is OFF
+10-29 03:05:12.719  3851  3851 W art     : Unexpected CPU variant for X86 using defaults: x86_64
+10-29 03:05:12.723  3851  3851 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+10-29 03:05:12.738  3851  3851 E memtrack: Couldn't load memtrack module (No such file or directory)
+10-29 03:05:12.738  3851  3851 E android.os.Debug: failed to load memtrack module: -2
+10-29 03:05:12.738  3851  3851 I Radio-JNI: register_android_hardware_Radio DONE
+10-29 03:05:12.744  3851  3851 D AndroidRuntime: Calling main entry com.android.commands.settings.SettingsCmd
+10-29 03:05:12.746  3851  3851 D AndroidRuntime: Shutting down VM
+10-29 03:05:12.939  3861  3861 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 03:05:12.940  3861  3861 D AndroidRuntime: CheckJNI is OFF
+10-29 03:05:12.966  3861  3861 W art     : Unexpected CPU variant for X86 using defaults: x86_64
+10-29 03:05:12.969  3861  3861 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+10-29 03:05:12.985  3861  3861 E memtrack: Couldn't load memtrack module (No such file or directory)
+10-29 03:05:12.985  3861  3861 E android.os.Debug: failed to load memtrack module: -2
+10-29 03:05:12.985  3861  3861 I Radio-JNI: register_android_hardware_Radio DONE
+10-29 03:05:12.993  3861  3861 D AndroidRuntime: Calling main entry com.android.commands.settings.SettingsCmd
+10-29 03:05:13.002  3861  3861 D AndroidRuntime: Shutting down VM
+10-29 03:05:13.212  3871  3871 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 03:05:13.213  3871  3871 D AndroidRuntime: CheckJNI is OFF
+10-29 03:05:13.241  3871  3871 W art     : Unexpected CPU variant for X86 using defaults: x86_64
+10-29 03:05:13.248  3871  3871 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+10-29 03:05:13.276  3871  3871 E memtrack: Couldn't load memtrack module (No such file or directory)
+10-29 03:05:13.276  3871  3871 E android.os.Debug: failed to load memtrack module: -2
+10-29 03:05:13.276  3871  3871 I Radio-JNI: register_android_hardware_Radio DONE
+10-29 03:05:13.281  3871  3871 D AndroidRuntime: Calling main entry com.android.commands.am.Am
+10-29 03:05:13.286  1615  1626 I ActivityManager: START u0 {flg=0x10000000 cmp=com.android.systemui/.Somnambulator} from uid 2000 on display 0
+10-29 03:05:13.298  3871  3871 D AndroidRuntime: Shutting down VM
+10-29 03:05:13.311  1303  3259 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 5947392
+10-29 03:05:13.318  1615  2014 D         : HostConnection::get() New Host Connection established 0x7f0003b66280, tid 2014
+10-29 03:05:13.398  1766  1766 I Sandman : Activating dream by user request.
+10-29 03:05:13.401  1615  1627 I PowerManagerService: Nap time (uid 1000)...
+10-29 03:05:13.402  1615  1638 I DreamManagerService: Entering dreamland.
+10-29 03:05:13.403  1615  1638 I PowerManagerService: Dreaming...
+10-29 03:05:13.403  1615  1634 I DreamController: Starting dream: name=ComponentInfo{com.twtrubiks.clockstandby/com.twtrubiks.clockstandby.ClockDreamService}, isTest=false, canDoze=false, userId=0
+10-29 03:05:13.405  1303  1328 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+10-29 03:05:13.415  1615  2014 I WindowManager: Failed to capture screenshot of Token{a95c2d7 ActivityRecord{2c7e256 u0 com.android.systemui/.Somnambulator t6 f}} appWin=Window{8c4b0a9 u0 Starting com.android.systemui} drawState=1
+10-29 03:05:13.493  1615  1636 I WindowManager: Destroying surface Surface(name=Starting com.android.systemui) called by com.android.server.wm.WindowStateAnimator.destroySurface:2014 com.android.server.wm.WindowStateAnimator.destroySurfaceLocked:881 com.android.server.wm.WindowState.removeLocked:1449 com.android.server.wm.WindowManagerService.removeWindowInnerLocked:2478 com.android.server.wm.WindowManagerService.removeWindowLocked:2436 com.android.server.wm.WindowManagerService.removeWindowLocked:2305 com.android.server.wm.WindowManagerService.removeWindow:2300 com.android.server.wm.Session.remove:193 
+10-29 03:05:13.513  1766  1978 D EGL_emulation: eglMakeCurrent: 0x7f0014c35960: ver 3 0 (tinfo 0x7f0014c0c660)
+10-29 03:05:13.537  1615  1629 W BroadcastQueue: Permission Denial: broadcasting Intent { act=android.intent.action.BATTERY_CHANGED flg=0x60000010 (has extras) } from null (pid=-1, uid=-1) requires com.twtrubiks.clockstandby.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION due to registered receiver BroadcastFilter{f0030bf u0 ReceiverList{5136de 3772 com.twtrubiks.clockstandby/10062/u0 remote:44e1619}}
+10-29 03:05:13.564  3772  3777 I art     : Compiler allocated 5MB to compile void w4.<init>(java.lang.String, i11, java.util.List, java.util.List, ou, um, boolean)
+10-29 03:05:13.644  1766  1978 D EGL_emulation: eglMakeCurrent: 0x7f0014c35960: ver 3 0 (tinfo 0x7f0014c0c660)
+10-29 03:05:13.647  1766  1766 W asset   : Asset path /data/app/com.twtrubiks.clockstandby-1/base.apk is neither a directory nor file (type=1).
+10-29 03:05:13.647  1766  1766 W PackageManager: Failure retrieving resources for com.twtrubiks.clockstandby
+10-29 03:05:13.647  1766  1766 W asset   : Asset path /data/app/com.twtrubiks.clockstandby-1/base.apk is neither a directory nor file (type=1).
+10-29 03:05:13.647  1766  1766 W PackageManager: Failure retrieving resources for com.twtrubiks.clockstandby
+10-29 03:05:13.647  1766  1766 W asset   : Asset path /data/app/com.twtrubiks.clockstandby-1/base.apk is neither a directory nor file (type=1).
+10-29 03:05:13.647  1766  1766 W PackageManager: Failure retrieving resources for com.twtrubiks.clockstandby
+10-29 03:05:13.748  3772  3788 D EGL_emulation: eglMakeCurrent: 0x7f0014c420a0: ver 3 0 (tinfo 0x7f0014c0c380)
+10-29 03:05:13.961  3772  3777 I art     : Compiler allocated 10MB to compile void h90.a(v21, xv, da0, ds, ps, bw, th, rw, int)
+10-29 03:05:13.964  3772  3788 D EGL_emulation: eglMakeCurrent: 0x7f0014c420a0: ver 3 0 (tinfo 0x7f0014c0c380)
+10-29 03:05:13.990  3772  3788 D EGL_emulation: eglMakeCurrent: 0x7f0014c420a0: ver 3 0 (tinfo 0x7f0014c0c380)
+10-29 03:05:15.004  3772  3777 I art     : Do full code cache collection, code=1017KB, data=805KB
+10-29 03:05:15.005  3772  3777 I art     : After code cache collection, code=956KB, data=716KB
+10-29 03:05:17.334  1303  3259 E SurfaceFlinger: ro.sf.lcd_density must be defined as a build property
+10-29 03:05:17.335  1303  1979 D gralloc_ranchu: gralloc_alloc: Creating ashmem region of size 17973248
+10-29 03:05:17.336  3883  3883 D         : HostConnection::get() New Host Connection established 0x7b414402d4e0, tid 3883
+10-29 03:05:17.615  3886  3886 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-29 03:05:17.616  3886  3886 D AndroidRuntime: CheckJNI is OFF
+10-29 03:05:17.628  3886  3886 W art     : Unexpected CPU variant for X86 using defaults: x86_64
+10-29 03:05:17.629  3886  3886 D ICU     : No timezone override file found: /data/misc/zoneinfo/current/icu/icu_tzdata.dat
+10-29 03:05:17.637  3886  3886 E memtrack: Couldn't load memtrack module (No such file or directory)
+10-29 03:05:17.637  3886  3886 E android.os.Debug: failed to load memtrack module: -2
+10-29 03:05:17.637  3886  3886 I Radio-JNI: register_android_hardware_Radio DONE
+10-29 03:05:17.640  3886  3886 D AndroidRuntime: Calling main entry com.android.commands.input.Input
+10-29 03:05:17.643  3886  3886 I Input   : injectMotionEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=720.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=116620, downTime=116620, deviceId=0, source=0x1002 }
+10-29 03:05:17.643  1615  2014 I DreamManagerService: Leaving dreamland.
+10-29 03:05:17.643  1615  1638 I PowerManagerService: Waking up from dream (uid 1000)...
+10-29 03:05:17.643  1615  1634 I DreamController: Stopping dream: name=ComponentInfo{com.twtrubiks.clockstandby/com.twtrubiks.clockstandby.ClockDreamService}, isTest=false, canDoze=false, userId=0
+10-29 03:05:17.649  3886  3886 I Input   : injectMotionEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=720.0, y[0]=1560.0, toolType[0]=TOOL_TYPE_UNKNOWN, buttonState=0, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=116620, downTime=116620, deviceId=0, source=0x1002 }
+10-29 03:05:17.649  3772  3788 D EGL_emulation: eglMakeCurrent: 0x7f0014c420a0: ver 3 0 (tinfo 0x7f0014c0c380)
+10-29 03:05:17.651  3886  3886 D AndroidRuntime: Shutting down VM
+10-29 03:05:17.672  1766  1978 D EGL_emulation: eglMakeCurrent: 0x7f0014c35960: ver 3 0 (tinfo 0x7f0014c0c660)
+10-29 03:05:17.673  3772  3788 D EGL_emulation: eglMakeCurrent: 0x7f0014c420a0: ver 3 0 (tinfo 0x7f0014c0c380)
+10-29 03:05:17.689  1766  1978 D EGL_emulation: eglMakeCurrent: 0x7f0014c35960: ver 3 0 (tinfo 0x7f0014c0c660)
+10-29 03:05:17.774  1766  1978 D EGL_emulation: eglMakeCurrent: 0x7f0014c35960: ver 3 0 (tinfo 0x7f0014c0c660)
+10-29 03:05:17.818  1766  1978 D EGL_emulation: eglMakeCurrent: 0x7f0014c35960: ver 3 0 (tinfo 0x7f0014c0c660)
+10-29 03:05:18.015  1615  1636 I WindowManager: Destroying surface Surface(name=Sys2023:dream) called by com.android.server.wm.WindowStateAnimator.destroySurface:2014 com.android.server.wm.WindowStateAnimator.destroySurfaceLocked:881 com.android.server.wm.WindowState.destroyOrSaveSurface:2073 com.android.server.wm.WindowSurfacePlacer.performSurfacePlacementInner:429 com.android.server.wm.WindowSurfacePlacer.performSurfacePlacementLoop:232 com.android.server.wm.WindowSurfacePlacer.performSurfacePlacement:180 com.android.server.wm.WindowManagerService$H.handleMessage:8079 android.os.Handler.dispatchMessage:102 

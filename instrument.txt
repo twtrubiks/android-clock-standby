@@ -1,0 +1,8 @@
+
+com.twtrubiks.clockstandby.DemoRecordingTest:.
+
+Time: 70.764
+
+OK (1 test)
+
+

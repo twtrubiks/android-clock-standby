@@ -1,0 +1,5 @@
+branch: main
+commit: 60445c83d1fd4bad8c0b8861ad84d25f8ae7e348
+api level: 24
+run: https://github.com/twtrubiks/android-clock-standby/actions/runs/40809743741
+job status: success
