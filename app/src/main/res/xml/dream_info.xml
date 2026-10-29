@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 系統螢幕保護程式設定裡的齒輪按鈕：打開 App 調整錶面、時制和夜間模式 -->
+<dream xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="com.twtrubiks.clockstandby.MainActivity" />
