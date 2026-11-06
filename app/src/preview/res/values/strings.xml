@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 預覽版和正式版可以同時安裝，名稱標出來才分得清楚（桌面圖示和螢幕保護程式清單都會顯示） -->
+    <string name="app_name">時鐘待機（預覽）</string>
+</resources>

@@ -12,7 +12,7 @@
 
 流程和心得寫在[實作流程](#實作流程完全遠端開發)。
 
-**下載**：[APK](../../releases/latest/download/clock-standby.apk) · [展示影片](../../releases/latest/download/demo.mp4) · [Release 頁面](../../releases/latest)（安裝方式見[安裝](#安裝)）
+**下載**：[APK](../../releases/latest/download/clock-standby.apk) · [展示影片](docs/demo.mp4) · [Release 頁面](../../releases/latest)（安裝方式見[安裝](#安裝)）
 
 | 數位錶面 | 指針錶面 | 翻頁錶面 |
 | :---: | :---: | :---: |
@@ -49,9 +49,11 @@
 
 到 [Release 頁面](../../releases/latest) 下載 `clock-standby.apk`，在手機上安裝就好（手機要允許「安裝未知應用程式」）。
 
-在雲端開發時也可以直接跟 Claude 說「給我 APK」，它會把 `clock-standby-<commit>.apk` 傳到對話裡。
-
-- 簽 APK 的金鑰每次都不一樣（Release 的每次發佈、每個雲端 session 都是），換裝另一個來源的 APK 時要先移除舊版。
+- 正式版從 v1.0.0 開始用固定的金鑰簽章，之後的新版都能直接覆蓋升級，設定會保留。
+  v1.0.0 之前下載的 APK 是用 debug 金鑰簽的，要先移除一次再裝。
+- 在雲端開發時也可以跟 Claude 說「給我 APK」，它會把預覽版 `clock-standby-preview-<commit>.apk` 傳到對話裡。
+  預覽版的名稱是「時鐘待機（預覽）」，可以和正式版同時安裝、各自保留設定；
+  它用雲端 session 的 debug 金鑰簽章，換 session 之後要先移除舊的預覽版。
 - 要用充電待機：到手機的「設定 > 顯示 > 螢幕保護程式」選「時鐘待機」，啟動時機選「充電時」。
   各家手機的選單位置可能不太一樣。
 
@@ -67,7 +69,7 @@ flowchart TD
     C -->|影片、截圖、log| D["media branch"]
     D --> E["Claude 看截圖和影格，確認畫面正常"]
     E -->|畫面不對或測試失敗| B
-    E -->|沒問題| F["Claude 把影片和 APK 傳到對話裡"]
+    E -->|沒問題| F["Claude 把影片和預覽版 APK 傳到對話裡"]
     F --> G["裝到手機上試用"]
     G -->|有新想法| A
 ```
@@ -83,10 +85,12 @@ flowchart TD
    - 展示流程用 UiAutomator 像真人一樣操作：翻介紹頁、換錶面、開設定、轉橫屏、在側邊滑動調亮度、模擬接上充電器、兩指縮放，關鍵畫面另存截圖
    - 錄完再覆蓋安裝 release 版，三種錶面和螢幕保護程式各拍一張，檢查 R8 壓縮後有沒有閃退
 4. **結果推到 media branch**：影片壓縮後每 2 秒抽一張影格，連同截圖和 log 一起 force-push 到 `media` branch，
-   也上傳成 Actions run 的 `android-demo` artifact。`main` 的錄影成功時，release APK 和影片另外發佈到 GitHub Release（每次覆蓋）。
+   也上傳成 Actions run 的 `android-demo` artifact。
 5. **Claude 檢查畫面**：雲端 session 用 git 讀 `media` branch，看影格、截圖和 logcat 判斷畫面對不對。
    測試失敗就從 `instrument.txt`、`logcat.txt` 找原因，修好再回到第 2 步。
-6. **交付**：確認沒問題後，Claude 把影片和 release APK 直接傳到對話裡，下載裝到手機上試用，有意見再下一輪指令。
+6. **交付**：確認沒問題後，Claude 把影片和預覽版 APK 直接傳到對話裡，下載裝到手機上試用，有意見再下一輪指令。
+7. **發佈正式版**：功能告一段落時改版本號、打 tag（例如 `v1.1.0`），GitHub Actions 用正式金鑰打包，發佈到 GitHub Release。
+   金鑰設定和步驟寫在 [`docs/release.md`](docs/release.md)。
 
 ### 適合打樣，但很慢
 
@@ -147,11 +151,13 @@ app/src/main/java/com/twtrubiks/clockstandby/
 └── ClockMath.kt             和 Android 無關的計算，有 JVM 單元測試
 app/src/test/…/ClockMathTest.kt              單元測試
 app/src/androidTest/…/DemoRecordingTest.kt   錄影用的展示流程（UiAutomator）
-.github/workflows/android-record.yml         GitHub Actions：模擬器錄影、發佈 Release
+.github/workflows/android-record.yml         GitHub Actions：模擬器錄影
+.github/workflows/release.yml                GitHub Actions：push v* tag 時發佈正式版
 scripts/cloud-setup.sh                       雲端環境的 setup script（安裝 Android SDK）
 scripts/ci/record.sh                         在模擬器上錄影、跑 release 版冒煙測試
 scripts/update-screenshots.sh                把最新一次錄影的截圖和影片更新到 docs/
 docs/cloud-setup.md                          claude.ai/code 的環境設定步驟
+docs/release.md                              正式金鑰設定與發佈步驟
 CLAUDE.md                                    給 Claude 看的開發約定和流程
 ```
 

@@ -1,22 +1,27 @@
 # 時鐘待機（Clock Standby）
 
 Kotlin + Jetpack Compose 原生 Android App，全程在 Claude Code 雲端 session 開發。
-雲端 VM 沒有模擬器，模擬器操作與錄影交給 GitHub Actions（`.github/workflows/android-record.yml`）。
+雲端 VM 沒有模擬器，模擬器操作與錄影交給 GitHub Actions（`.github/workflows/android-record.yml`）；
+正式版由 `.github/workflows/release.yml` 在 push `v*` tag 時發佈。
 
 ## 專案約定
 
 - applicationId / namespace：`com.twtrubiks.clockstandby`（`scripts/ci/record.sh` 依賴這個值，改了要一起改）。
-  repo 改名時不要跟著改：applicationId 一變，手機會當成另一個 App，設定和螢幕保護程式的選擇都不會帶過去
+  repo 改名時不要跟著改：applicationId 一變，手機會當成另一個 App，設定和螢幕保護程式的選擇都不會帶過去。
+  preview build type 另外加上 `.preview`
 - 文件裡不要寫死 repo 名稱：`gh api` 用 `repos/{owner}/{repo}/...`（`gh` 會從 git remote 帶入），workflow 用 `${GITHUB_REPOSITORY}`
 - 單一 module `app`，主畫面 `MainActivity`；充電待機是系統螢幕保護程式 `ClockDreamService`（不要改成常駐的前景服務）
 - minSdk 24（Android 7.0），compileSdk 37，targetSdk 36，Java / Kotlin target 17
   （`java.time` 在 API 26 才內建，靠 core library desugaring 補上；新增 API 26+ 的 API 前先跑 `./gradlew lintDebug` 看 NewApi）
   （Compose 1.12 / core 1.19 的 AAR metadata 要求 compileSdk ≥ 37；缺 `platforms;android-37.0` 時 AGP 會自動下載）
 - 依賴版本集中在 `gradle/libs.versions.toml`
-- release 版開 R8（minify + shrinkResources），不上架所以用 debug 金鑰簽，可以和同一台機器打包的 debug 版互相覆蓋安裝。
-  debug 金鑰在 VM 的 `~/.android/debug.keystore`，換 session 會變，之後給使用者的 APK 簽章就對不上，要先移除舊版
-- 使用者要 APK 時給 release 版（`app/build/outputs/apk/release/app-release.apk`），
-  複製到 scratchpad 改名成 `clock-standby-<commit>.apk`，再用 SendUserFile（`display: attach`）傳送
+- release 版開 R8（minify + shrinkResources）。正式金鑰只在 `release.yml` 用環境變數（`RELEASE_KEYSTORE_FILE` 等）提供，
+  沒有時用 debug 金鑰簽（VM、錄影 workflow），錄影的冒煙測試才能覆蓋安裝在 debug 版上
+- `preview` build type：release 的設定改用 debug 金鑰簽、applicationId 加 `.preview`、名稱「時鐘待機（預覽）」
+  （`app/src/preview/res/values/strings.xml`），可以和使用者手機上的正式版同時安裝
+- 使用者要 APK 時給預覽版：`./gradlew assemblePreview`，把 `app/build/outputs/apk/preview/app-preview.apk`
+  複製到 scratchpad 改名成 `clock-standby-preview-<commit>.apk`，再用 SendUserFile（`display: attach`）傳送。
+  debug 金鑰在 VM 的 `~/.android/debug.keystore`，換 session 會變，和之前給的預覽版簽章對不上，要先移除舊的預覽版
 - AGP 9.x 使用 built-in Kotlin：**不要**套 `org.jetbrains.kotlin.android`，Compose 要套 `org.jetbrains.kotlin.plugin.compose`
 - 版本起點（2026-10 查的最新穩定版）：AGP 9.4.1、Kotlin / Compose compiler plugin 2.4.21、Gradle wrapper 9.8.2、
   Compose BOM 2026.09.00、activity-compose 1.13.0、core-ktx 1.19.1、lifecycle-runtime-ktx 2.11.0、
@@ -105,13 +110,21 @@ class DemoRecordingTest {
 
 完成後告訴使用者：影片在 media branch 的 `demo.mp4`，或該次 Actions run 的 `android-demo` artifact。
 
-`main` 的錄影（API 24）成功時，最後一步會把 release APK 和 `demo.mp4` 發佈到 tag `latest` 的 GitHub Release（刪掉重建，固定檔名
-`clock-standby.apk`、`demo.mp4`），README 的下載連結用 `../../releases/latest/download/…`。
-其他 branch 和其他 API level 不會發佈；只改文件或 workflow 合併到 `main` 也不會觸發，要更新 Release 就手動觸發 `main` 的錄影（`-f ref=main`）。
-
 看完 frames 確認畫面正常後，把 `/tmp/media/demo.mp4` 複製到 session 的 scratchpad 目錄，
 用 SendUserFile（`display: render`）直接傳給使用者，讓使用者不用 pull 就能播放。
 傳之前先核對 `info.txt` 的 commit 是這次的。
+
+## 發佈正式版（使用者要求時才做）
+
+金鑰設定與完整步驟在 `docs/release.md`，錄影 workflow 不會發佈 Release。
+
+1. 改 `app/build.gradle.kts`：`versionCode` 加 1、`versionName` 照 semver 改，commit `chore: release vX.Y.Z` 並 push 到 `main`
+2. 等這個 commit 在 `main` 的錄影成功（包含 release 版冒煙測試）
+3. `git tag vX.Y.Z && git push origin vX.Y.Z`；`release.yml` 會檢查 tag 和 `versionName` 一致、用正式金鑰打包、
+   確認不是 debug 簽章，再建立 GitHub Release（固定檔名 `clock-standby.apk`，加上 `.sha256`）
+4. 查進度：`gh api 'repos/{owner}/{repo}/actions/workflows/release.yml/runs?per_page=1' --jq '.workflow_runs[0] | {id, status, conclusion, head_branch}'`
+
+README 的 APK 下載連結用 `../../releases/latest/download/clock-standby.apk`，展示影片連 `docs/demo.mp4`。
 
 ## README 截圖與文件
 

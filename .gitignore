@@ -8,3 +8,7 @@ captures/
 .DS_Store
 /out/
 /media/
+
+# 正式版的簽章金鑰不能進 repo（放在 GitHub Secrets，見 docs/release.md）
+*.jks
+*.keystore

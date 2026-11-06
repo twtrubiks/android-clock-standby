@@ -14,10 +14,25 @@ android {
         // Android 7.0；java.time 靠 core library desugaring 補上
         minSdk = 24
         targetSdk = 36
+        // 發佈新版時 versionCode + 1、versionName 照 semver 改，再打同名的 tag（v1.0.0），見 docs/release.md
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        // 正式金鑰只有發佈 workflow（.github/workflows/release.yml）會用環境變數提供
+        val releaseKeystore = providers.environmentVariable("RELEASE_KEYSTORE_FILE").orNull
+        if (releaseKeystore != null) {
+            create("release") {
+                storeFile = file(releaseKeystore)
+                storePassword = providers.environmentVariable("RELEASE_KEYSTORE_PASSWORD").get()
+                keyAlias = providers.environmentVariable("RELEASE_KEY_ALIAS").get()
+                // keytool 預設的 PKCS12 格式，金鑰和 keystore 是同一個密碼
+                keyPassword = storePassword
+            }
+        }
     }
 
     buildTypes {
@@ -26,8 +41,17 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
-            // 不上架，用 debug 金鑰簽就能直接安裝，也能覆蓋同一台機器打包的 debug 版
+            // 沒有正式金鑰（VM、錄影 workflow）時用 debug 金鑰簽，冒煙測試才能覆蓋安裝在 debug 版上
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
+        }
+        // 預覽版：給使用者試用開發中的版本。和 release 一樣經過 R8，但用 debug 金鑰簽、
+        // applicationId 加上 .preview，能和正式版同時裝在手機上，各自保留設定
+        create("preview") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".preview"
+            versionNameSuffix = "-preview"
             signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks.add("release")
         }
     }
 

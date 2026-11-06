@@ -4,7 +4,7 @@ name: Android demo recording
 # 結果會：
 #   1. 上傳成 artifact（android-demo），方便從手機 / 網頁下載
 #   2. force-push 到 media branch，讓 Claude 雲端 session 用 git 讀取影格圖片
-#   3. main 錄影成功時，release APK 和影片發佈到 GitHub Release（tag latest），給 README 的下載連結用
+# 正式版的 GitHub Release 由 release.yml 在 push v* tag 時發佈，這裡不發佈。
 # 只改 scripts/ci 或這個 workflow 時不會自動觸發，要手動 workflow_dispatch
 # （避免 Android 專案還沒建立時就跑）。
 on:
@@ -131,28 +131,3 @@ jobs:
           git add -A
           git commit -qm "Demo recording: ${GITHUB_REF_NAME} @ ${GITHUB_SHA::7}"
           git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" media
-
-      # main 的錄影（API 24）成功時，把通過冒煙測試的 release APK 和這次的影片發佈到 tag latest 的 Release，
-      # 每次覆蓋，README 用 releases/latest/download/... 的固定網址下載
-      - name: Publish GitHub Release
-        if: success() && github.ref == 'refs/heads/main' && (inputs.api-level || '24') == '24'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          mkdir -p release
-          cp app/build/outputs/apk/release/app-release.apk release/clock-standby.apk
-          cp media/demo.mp4 release/demo.mp4
-          cat > release/notes.md <<EOF
-          \`main\` 最新一次錄影通過的 release 版（commit ${GITHUB_SHA}），錄影和冒煙測試沒有閃退才會發佈。
-
-          - \`clock-standby.apk\`：下載到手機安裝（手機要允許「安裝未知應用程式」）
-          - \`demo.mp4\`：這個版本的展示影片
-
-          每次 build 都用新的 debug 金鑰簽章，裝過舊版的話要先移除再安裝。
-
-          錄影：${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
-          EOF
-          gh release delete latest --cleanup-tag --yes || true
-          gh release create latest release/clock-standby.apk release/demo.mp4 \
-            --target "$GITHUB_SHA" --latest --title "時鐘待機 ${GITHUB_SHA::7}" --notes-file release/notes.md
