@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import kotlin.math.sqrt
 
 /** 指針的角度（度），12 點方向為 0，順時針遞增。 */
 data class HandAngles(val hour: Float, val minute: Float, val second: Float)
@@ -26,6 +27,18 @@ object ClockMath {
     const val MIN_CLOCK_SCALE = 0.5f
     const val MAX_CLOCK_SCALE = 1f
     const val DEFAULT_CLOCK_SCALE = 0.9f
+
+    /** 夜間模式沒有用滑動調過亮度時，給視窗的螢幕亮度（0～1）。 */
+    const val NIGHT_SCREEN_BRIGHTNESS = 0.05f
+
+    /** 滑動調亮度的最低等級（1%）；系統會再限制在螢幕的最低亮度以上，不會變成全黑。 */
+    const val MIN_BRIGHTNESS_LEVEL = 0.01f
+
+    /** 系統亮度設定（Settings.System.SCREEN_BRIGHTNESS）的最大值。 */
+    private const val SYSTEM_BRIGHTNESS_MAX = 255f
+
+    /** 系統沒給亮度設定時，滑動從這個等級開始。 */
+    private const val FALLBACK_BRIGHTNESS_LEVEL = 0.5f
 
     // 中心 → 右 → 右下 → 下 → … 繞一圈，每分鐘換一格
     private val burnInPattern = listOf(
@@ -101,6 +114,49 @@ object ClockMath {
     fun clampClockScale(scale: Float): Float = scale.coerceIn(MIN_CLOCK_SCALE, MAX_CLOCK_SCALE)
 
     fun clockScalePercent(scale: Float): Int = (scale * 100).roundToInt()
+
+    /*
+     * 亮度分成兩種值：
+     * - 等級：滑動調整、畫面上顯示的百分比，也是存起來的值
+     * - 螢幕亮度：給視窗的值（WindowManager.LayoutParams.screenBrightness），和背光強度成正比
+     * 人眼對暗處的變化比較敏感，螢幕亮度取等級的平方，低亮度那一段才分得夠細，手感和系統的亮度條接近。
+     */
+
+    fun clampBrightnessLevel(level: Float): Float = level.coerceIn(MIN_BRIGHTNESS_LEVEL, 1f)
+
+    fun levelToScreenBrightness(level: Float): Float {
+        val clamped = clampBrightnessLevel(level)
+        return clamped * clamped
+    }
+
+    fun screenBrightnessToLevel(brightness: Float): Float = clampBrightnessLevel(sqrt(brightness.coerceIn(0f, 1f)))
+
+    fun brightnessPercent(level: Float): Int = (clampBrightnessLevel(level) * 100).roundToInt()
+
+    /**
+     * 往上滑 [dragY] 是負的，亮度變高；滑過 [span] 的距離就是 0% 到 100%。
+     */
+    fun adjustBrightnessLevel(level: Float, dragY: Float, span: Float): Float =
+        clampBrightnessLevel(level - dragY / span)
+
+    /**
+     * 還沒調過亮度時，滑動從哪個等級開始：夜間模式是預設的低亮度，白天是系統的亮度設定（0～255，讀不到時是負數）。
+     * 系統開了自動亮度時，這個設定是使用者最後手動調的值，和實際亮度可能不一樣。
+     */
+    fun defaultBrightnessLevel(nightMode: Boolean, systemBrightness: Int): Float = when {
+        nightMode -> screenBrightnessToLevel(NIGHT_SCREEN_BRIGHTNESS)
+        systemBrightness < 0 -> FALLBACK_BRIGHTNESS_LEVEL
+        else -> screenBrightnessToLevel(systemBrightness / SYSTEM_BRIGHTNESS_MAX)
+    }
+
+    /**
+     * 視窗要用的螢幕亮度：調過就用調過的等級，沒調過時夜間用預設低亮度，白天回傳 null 代表跟著系統。
+     */
+    fun windowBrightness(nightMode: Boolean, level: Float?): Float? = when {
+        level != null -> levelToScreenBrightness(level)
+        nightMode -> NIGHT_SCREEN_BRIGHTNESS
+        else -> null
+    }
 
     /** 電量百分比；系統沒給有效數值時回傳 null。 */
     fun batteryPercent(level: Int, scale: Int): Int? {

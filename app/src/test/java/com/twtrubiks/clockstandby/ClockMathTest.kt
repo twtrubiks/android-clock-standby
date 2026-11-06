@@ -130,4 +130,77 @@ class ClockMathTest {
         assertNull(ClockMath.batteryPercent(level = -1, scale = 100))
         assertNull(ClockMath.batteryPercent(level = 50, scale = 0))
     }
+
+    @Test
+    fun screenBrightness_isSquareOfLevel() {
+        assertEquals(1f, ClockMath.levelToScreenBrightness(1f), 0.0001f)
+        assertEquals(0.25f, ClockMath.levelToScreenBrightness(0.5f), 0.0001f)
+        assertEquals(0.5f, ClockMath.screenBrightnessToLevel(0.25f), 0.0001f)
+        // 超出範圍時夾在 1%～100%
+        assertEquals(0.0001f, ClockMath.levelToScreenBrightness(0f), 0.00001f)
+        assertEquals(1f, ClockMath.screenBrightnessToLevel(2f), 0.0001f)
+        assertEquals(ClockMath.MIN_BRIGHTNESS_LEVEL, ClockMath.screenBrightnessToLevel(0f), 0.0001f)
+    }
+
+    @Test
+    fun brightnessPercent_roundsAndClamps() {
+        assertEquals(22, ClockMath.brightnessPercent(0.2236f))
+        assertEquals(1, ClockMath.brightnessPercent(0f))
+        assertEquals(100, ClockMath.brightnessPercent(1.5f))
+    }
+
+    @Test
+    fun adjustBrightnessLevel_upIsBrighter() {
+        // 往上滑半個高度（dragY 是負的）亮度加 50%
+        assertEquals(0.8f, ClockMath.adjustBrightnessLevel(0.3f, dragY = -500f, span = 1000f), 0.0001f)
+        assertEquals(0.2f, ClockMath.adjustBrightnessLevel(0.3f, dragY = 100f, span = 1000f), 0.0001f)
+        assertEquals(1f, ClockMath.adjustBrightnessLevel(0.9f, dragY = -500f, span = 1000f), 0.0001f)
+        assertEquals(
+            ClockMath.MIN_BRIGHTNESS_LEVEL,
+            ClockMath.adjustBrightnessLevel(0.1f, dragY = 500f, span = 1000f),
+            0.0001f,
+        )
+    }
+
+    @Test
+    fun defaultBrightnessLevel_nightUsesDefaultDayUsesSystem() {
+        // 夜間預設 5% 的螢幕亮度，換成等級約 22%
+        assertEquals(22, ClockMath.brightnessPercent(ClockMath.defaultBrightnessLevel(true, systemBrightness = 255)))
+        assertEquals(1f, ClockMath.defaultBrightnessLevel(false, systemBrightness = 255), 0.0001f)
+        assertEquals(0.5f, ClockMath.defaultBrightnessLevel(false, systemBrightness = 64), 0.01f)
+        // 讀不到系統亮度時從一半開始
+        assertEquals(0.5f, ClockMath.defaultBrightnessLevel(false, systemBrightness = -1), 0.0001f)
+    }
+
+    @Test
+    fun windowBrightness_fallsBackToSystemOrNightDefault() {
+        assertNull(ClockMath.windowBrightness(nightMode = false, level = null))
+        assertEquals(
+            ClockMath.NIGHT_SCREEN_BRIGHTNESS,
+            ClockMath.windowBrightness(nightMode = true, level = null)!!,
+            0.0001f,
+        )
+        assertEquals(0.36f, ClockMath.windowBrightness(nightMode = false, level = 0.6f)!!, 0.0001f)
+        assertEquals(0.04f, ClockMath.windowBrightness(nightMode = true, level = 0.2f)!!, 0.0001f)
+    }
+
+    @Test
+    fun settings_brightnessPerDayAndNight() {
+        val day = ClockSettings().withBrightnessLevel(0.7f)
+        assertEquals(0.7f, day.dayBrightness!!, 0f)
+        assertNull(day.nightBrightness)
+
+        val night = day.copy(nightMode = true)
+        assertNull(night.brightnessLevel)
+        val adjusted = night.withBrightnessLevel(0.1f)
+        assertEquals(0.1f, adjusted.brightnessLevel!!, 0f)
+        assertEquals(0.7f, adjusted.dayBrightness!!, 0f)
+
+        // 關掉滑動調整：用系統亮度，調過的值也清掉
+        val off = adjusted.withBrightnessGesture(false)
+        assertNull(off.brightnessLevel)
+        assertNull(off.dayBrightness)
+        assertNull(off.nightBrightness)
+        assertNull(off.withBrightnessGesture(true).brightnessLevel)
+    }
 }

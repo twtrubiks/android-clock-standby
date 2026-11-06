@@ -24,8 +24,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitVerticalTouchSlopOrCancellation
 import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.verticalDrag
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -83,6 +85,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.Role
@@ -115,12 +118,15 @@ private val ControlsReserve = ControlsBarHeight + 8.dp
 /** 控制列沒有操作多久之後自動收起。 */
 private const val CONTROLS_AUTO_HIDE_MS = 5000L
 
-/** 夜間模式時這個畫面的螢幕亮度（0～1），離開時還原成系統亮度。 */
-private const val NIGHT_SCREEN_BRIGHTNESS = 0.05f
+/** 左右兩側各佔寬度的這個比例，在這裡上下滑動調整亮度；中間上下滑動不做事。 */
+private const val BRIGHTNESS_ZONE_FRACTION = 0.25f
+
+/** 縮放時鐘、調亮度時上方提示的內容。 */
+private enum class AdjustHint { Scale, Brightness }
 
 /**
  * 待機時鐘。預設只顯示時鐘、日期和電量；點一下時鐘才叫出控制列，沒有操作 5 秒後自動收起。
- * 錶面用左右滑動切換，其他設定收在設定面板裡。
+ * 錶面用左右滑動切換，左右兩側上下滑動調亮度，其他設定收在設定面板裡。
  */
 @Composable
 fun StandbyScreen(
@@ -129,7 +135,10 @@ fun StandbyScreen(
     modifier: Modifier = Modifier,
 ) {
     val settings = LocalClockSettings.current
-    StandbyWindowEffect(night = settings.nightMode)
+    val context = LocalContext.current
+    // 上下滑動時先改這個值，手指放開才交給 MainActivity 保存（和 liveScale 一樣）；沒在滑的時候是 null
+    var dragBrightness by remember { mutableStateOf<Float?>(null) }
+    StandbyWindowEffect(ClockMath.windowBrightness(settings.nightMode, dragBrightness ?: settings.brightnessLevel))
 
     val faces = ClockFace.entries
     val pagerState = rememberPagerState(initialPage = settings.face.ordinal) { faces.size }
@@ -143,15 +152,24 @@ fun StandbyScreen(
     // 兩指縮放時先改這個值，手指放開才交給 MainActivity 保存。
     // 不能用 settings 當 key：保存後換成新的 state，pinchToZoom 裡抓的還是舊的，之後就縮放不了
     var liveScale by remember { mutableFloatStateOf(settings.clockScale) }
-    var scaleHintVisible by remember { mutableStateOf(false) }
-    var scaleHintKey by remember { mutableIntStateOf(0) }
-    LaunchedEffect(scaleHintKey) {
-        if (scaleHintKey > 0) {
+
+    // 縮放或調亮度時在上方顯示目前的值，手指放開 1.5 秒後淡出；放開後又馬上調整的話不收
+    var hint by remember { mutableStateOf(AdjustHint.Scale) }
+    var hintVisible by remember { mutableStateOf(false) }
+    var adjusting by remember { mutableStateOf(false) }
+    LaunchedEffect(adjusting) {
+        if (!adjusting) {
             delay(1500)
-            scaleHintVisible = false
+            hintVisible = false
         }
     }
-    // pinchToZoom 和換頁的 collect 只在第一次組合時建立，要透過這兩個 state 拿到最新的設定與 callback
+    fun startAdjusting(kind: AdjustHint) {
+        adjusting = true
+        hint = kind
+        hintVisible = true
+    }
+
+    // pinchToZoom、brightnessSwipe 和換頁的 collect 只在第一次組合時建立，要透過這兩個 state 拿到最新的設定與 callback
     val currentSettings by rememberUpdatedState(settings)
     val currentOnSettingsChange by rememberUpdatedState(onSettingsChange)
 
@@ -196,11 +214,28 @@ fun StandbyScreen(
                         .pinchToZoom(
                             onZoom = { zoom ->
                                 liveScale = ClockMath.clampClockScale(liveScale * zoom)
-                                scaleHintVisible = true
+                                startAdjusting(AdjustHint.Scale)
                             },
                             onEnd = {
                                 currentOnSettingsChange(currentSettings.copy(clockScale = liveScale))
-                                scaleHintKey++
+                                adjusting = false
+                            },
+                        )
+                        .brightnessSwipe(
+                            enabled = settings.brightnessGesture,
+                            onStart = {
+                                val current = currentSettings
+                                dragBrightness = current.brightnessLevel
+                                    ?: ClockMath.defaultBrightnessLevel(current.nightMode, context.systemBrightness())
+                                startAdjusting(AdjustHint.Brightness)
+                            },
+                            onDrag = { dragY, span ->
+                                dragBrightness = dragBrightness?.let { ClockMath.adjustBrightnessLevel(it, dragY, span) }
+                            },
+                            onEnd = {
+                                dragBrightness?.let { currentOnSettingsChange(currentSettings.withBrightnessLevel(it)) }
+                                dragBrightness = null
+                                adjusting = false
                             },
                         ),
                 ) { page ->
@@ -226,9 +261,8 @@ fun StandbyScreen(
             }
         }
 
-        // 縮放時在上方顯示目前大小，放開 1.5 秒後淡出
         AnimatedVisibility(
-            visible = scaleHintVisible,
+            visible = hintVisible,
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .safeDrawingPadding()
@@ -237,7 +271,13 @@ fun StandbyScreen(
             exit = fadeOut(),
         ) {
             Text(
-                text = "時鐘大小 ${ClockMath.clockScalePercent(liveScale)}%",
+                text = when (hint) {
+                    AdjustHint.Scale -> "時鐘大小 ${ClockMath.clockScalePercent(liveScale)}%"
+                    // 放開後 dragBrightness 變回 null，改顯示剛存起來的值
+                    AdjustHint.Brightness -> (dragBrightness ?: settings.brightnessLevel)
+                        ?.let { "亮度 ${ClockMath.brightnessPercent(it)}%" }
+                        .orEmpty()
+                },
                 color = colors.primary,
                 fontSize = 16.sp,
                 modifier = Modifier
@@ -484,6 +524,12 @@ private fun SettingsPanel(
                 SettingSwitchRow("顯示秒數", settings.showSeconds, colors) {
                     onSettingsChange(settings.copy(showSeconds = it))
                 }
+                SettingSwitchRow(
+                    label = "滑動調整亮度",
+                    description = "在畫面左右兩側上下滑動，白天和夜間各自記住；關掉時改回系統亮度",
+                    checked = settings.brightnessGesture,
+                    colors = colors,
+                ) { onSettingsChange(settings.withBrightnessGesture(it)) }
                 SettingActionRow(
                     label = "充電時自動顯示",
                     description = "在系統的螢幕保護程式選擇「時鐘待機」，並設定充電時啟動",
@@ -501,6 +547,7 @@ private fun SettingSwitchRow(
     label: String,
     checked: Boolean,
     colors: ClockColors,
+    description: String? = null,
     onCheckedChange: (Boolean) -> Unit,
 ) {
     Row(
@@ -508,10 +555,15 @@ private fun SettingSwitchRow(
             .fillMaxWidth()
             .heightIn(min = 56.dp)
             .toggleable(value = checked, role = Role.Switch, onValueChange = onCheckedChange)
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = 24.dp, vertical = if (description != null) 12.dp else 0.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(label, color = colors.primary, fontSize = 17.sp, modifier = Modifier.weight(1f))
+        Column(Modifier.weight(1f).padding(end = 16.dp)) {
+            Text(label, color = colors.primary, fontSize = 17.sp)
+            description?.let {
+                Text(it, color = colors.secondary, fontSize = 13.sp, lineHeight = 18.sp)
+            }
+        }
         Switch(
             checked = checked,
             onCheckedChange = null,
@@ -680,11 +732,43 @@ private fun Modifier.pinchToZoom(onZoom: (Float) -> Unit, onEnd: () -> Unit): Mo
     }
 
 /**
- * 待機時保持螢幕常亮並隱藏系統列；夜間模式把這個視窗的亮度調到最低。離開時都還原。
+ * 在左右兩側上下滑動調亮度。[onDrag] 收到這次移動的距離（往上是負的）和代表 0～100% 的滑動距離（這塊的高度）。
+ * 要明顯往上下滑過 touch slop 才接手：先往左右滑的話 pager 會先吃掉，照常換錶面；
+ * 這裡接手後吃掉移動事件，pager 不會換頁，錶面的點擊也會取消，不會叫出控制列。
+ * 兩指縮放在 Initial pass 吃掉事件，滑到一半放下第二指時這裡就結束，改成縮放。
+ */
+private fun Modifier.brightnessSwipe(
+    enabled: Boolean,
+    onStart: () -> Unit,
+    onDrag: (dragY: Float, span: Float) -> Unit,
+    onEnd: () -> Unit,
+): Modifier = if (!enabled) this else pointerInput(Unit) {
+    awaitEachGesture {
+        val down = awaitFirstDown(requireUnconsumed = false)
+        val zone = size.width * BRIGHTNESS_ZONE_FRACTION
+        if (down.position.x > zone && down.position.x < size.width - zone) return@awaitEachGesture
+        var overSlop = 0f
+        val drag = awaitVerticalTouchSlopOrCancellation(down.id) { change, over ->
+            change.consume()
+            overSlop = over
+        } ?: return@awaitEachGesture
+        val span = size.height.toFloat().coerceAtLeast(1f)
+        onStart()
+        onDrag(overSlop, span)
+        verticalDrag(drag.id) { change ->
+            onDrag(change.positionChange().y, span)
+            change.consume()
+        }
+        onEnd()
+    }
+}
+
+/**
+ * 待機時保持螢幕常亮並隱藏系統列，視窗亮度用 [screenBrightness]（0～1，null 代表跟著系統）。離開時都還原。
  * App 和螢幕保護程式共用，視窗分別來自 Activity 和 DreamService。
  */
 @Composable
-internal fun StandbyWindowEffect(night: Boolean) {
+internal fun StandbyWindowEffect(screenBrightness: Float?) {
     val view = LocalView.current
     val window = remember(view) { view.context.findWindow() }
     DisposableEffect(view, window) {
@@ -697,18 +781,25 @@ internal fun StandbyWindowEffect(night: Boolean) {
             view.keepScreenOn = false
         }
     }
-    // 只改這個視窗的亮度，不動系統設定，也不用光感測器
-    DisposableEffect(window, night) {
-        window?.setScreenBrightness(
-            if (night) NIGHT_SCREEN_BRIGHTNESS else WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE,
-        )
+    // 只改這個視窗的亮度，不動系統設定，也不用光感測器（所以不需要 WRITE_SETTINGS 權限）。
+    // 滑動時每個移動事件都會換值，還原只放在離開時，換值之間不會先閃回系統亮度
+    DisposableEffect(window) {
         onDispose { window?.setScreenBrightness(WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE) }
+    }
+    DisposableEffect(window, screenBrightness) {
+        window?.setScreenBrightness(screenBrightness ?: WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE)
+        onDispose { }
     }
 }
 
 private fun Window.setScreenBrightness(brightness: Float) {
+    if (attributes.screenBrightness == brightness) return
     attributes = attributes.apply { screenBrightness = brightness }
 }
+
+/** 系統的亮度設定（0～255），讀不到時回傳 -1。讀取不需要權限。 */
+private fun Context.systemBrightness(): Int =
+    Settings.System.getInt(contentResolver, Settings.System.SCREEN_BRIGHTNESS, -1)
 
 private tailrec fun Context.findWindow(): Window? = when (this) {
     is Activity -> window

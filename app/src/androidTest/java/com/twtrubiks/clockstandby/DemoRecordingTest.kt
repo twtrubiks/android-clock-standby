@@ -3,6 +3,8 @@ package com.twtrubiks.clockstandby
 import android.content.Context
 import android.os.BatteryManager
 import android.os.SystemClock
+import android.view.InputDevice
+import android.view.MotionEvent
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -21,7 +23,7 @@ import java.time.LocalDate
 
 /**
  * 錄影用的展示流程：介紹頁 → 待機時鐘（控制列預設隱藏）→ 滑動 / 點指示點換錶面 → 設定面板切 24 小時制
- * → 夜間模式 → 橫屏 → 接上充電器 → 關掉秒數 → 控制列自動收起 → 兩指放大時鐘。
+ * → 夜間模式 → 橫屏 → 右側往上滑調亮夜間亮度 → 接上充電器 → 關掉秒數 → 控制列自動收起 → 兩指放大時鐘。
  * CI 只跑這個 class，`scripts/ci/record.sh` 會在執行期間錄下整個螢幕。
  */
 @RunWith(AndroidJUnit4::class)
@@ -37,7 +39,7 @@ class DemoRecordingTest {
 
     @Test
     fun demo() {
-        // 清掉設定（看過介紹、24 小時制、秒數、時鐘大小、錶面、夜間模式），確保每次都從介紹頁和預設值開始
+        // 清掉設定（看過介紹、24 小時制、秒數、時鐘大小、錶面、夜間模式、亮度），確保每次都從介紹頁和預設值開始
         prefs().edit().clear().commit()
         screenshotDir.deleteRecursively()
         screenshotDir.mkdirs()
@@ -103,6 +105,22 @@ class DemoRecordingTest {
                 waitFor(ClockMath.formatNumericDate(LocalDate.now()))
                 pause(2500)
                 screenshot("07-landscape-night")
+
+                // 在右側往上滑，把夜間模式的亮度調亮：按住不放時上方會顯示「亮度 xx%」
+                // （模擬器的截圖拍不到背光，只看得到提示）
+                val swipeX = device.displayWidth * 7 / 8
+                dragAndHold(swipeX, fromY = device.displayHeight * 3 / 4, toY = device.displayHeight * 2 / 5) {
+                    assertTrue(
+                        "沒有出現亮度提示",
+                        device.wait(Until.hasObject(By.textStartsWith("亮度 ")), 5_000),
+                    )
+                    screenshot("07b-night-brightness")
+                }
+                pause(1500)
+                val nightDefault = ClockMath.screenBrightnessToLevel(ClockMath.NIGHT_SCREEN_BRIGHTNESS)
+                assertTrue("夜間亮度沒有調亮", savedBrightness(ClockSettingsStore.KEY_NIGHT_BRIGHTNESS) > nightDefault)
+                assertFalse("白天亮度不應該被改到", prefs().contains(ClockSettingsStore.KEY_DAY_BRIGHTNESS))
+
                 selectFace("翻頁")
                 pause(2500)
 
@@ -160,6 +178,8 @@ class DemoRecordingTest {
 
     private fun savedClockScale() =
         prefs().getFloat(ClockSettingsStore.KEY_CLOCK_SCALE, ClockMath.DEFAULT_CLOCK_SCALE)
+
+    private fun savedBrightness(key: String) = prefs().getFloat(key, -1f)
 
     private fun waitForDesc(description: String) {
         assertTrue("畫面上找不到「$description」", device.wait(Until.hasObject(By.desc(description)), 10_000))
@@ -263,6 +283,35 @@ class DemoRecordingTest {
         val width = device.displayWidth
         device.swipe(width * 4 / 5, y, width / 5, y, 10)
         pause(800)
+    }
+
+    /**
+     * 從 ([x], [fromY]) 往上下拖到 [toY] 後按住不放，在按住時執行 [whileHolding]，最後才放開。
+     * UiDevice.swipe 一放開提示就開始倒數淡出，CI 上查詢一次要 1～2 秒，等不到截圖，所以自己送觸控事件。
+     */
+    private fun dragAndHold(x: Int, fromY: Int, toY: Int, steps: Int = 10, whileHolding: () -> Unit) {
+        val downTime = SystemClock.uptimeMillis()
+        touch(MotionEvent.ACTION_DOWN, x, fromY, downTime)
+        var y = fromY
+        try {
+            for (i in 1..steps) {
+                y = fromY + (toY - fromY) * i / steps
+                touch(MotionEvent.ACTION_MOVE, x, y, downTime)
+            }
+            whileHolding()
+        } finally {
+            touch(MotionEvent.ACTION_UP, x, y, downTime)
+        }
+    }
+
+    private fun touch(action: Int, x: Int, y: Int, downTime: Long) {
+        val event = MotionEvent.obtain(downTime, SystemClock.uptimeMillis(), action, x.toFloat(), y.toFloat(), 0)
+        event.source = InputDevice.SOURCE_TOUCHSCREEN
+        try {
+            assertTrue("觸控事件送不出去", instrumentation.uiAutomation.injectInputEvent(event, true))
+        } finally {
+            event.recycle()
+        }
     }
 
     // 橫屏時影片裡的畫面會被縮小，另外存一張截圖方便確認細節（縮成一半就夠清楚）。

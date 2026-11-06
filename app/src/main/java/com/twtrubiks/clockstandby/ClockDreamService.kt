@@ -25,7 +25,7 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
  * 充電待機：系統的螢幕保護程式（Daydream）。
  * 使用者在「設定 > 顯示 > 螢幕保護程式」選擇「時鐘待機」並設定充電時啟動後，
  * 由系統在充電且閒置時自動開啟，App 不需要常駐服務，也不用自己喚醒螢幕。
- * 錶面、時制、秒數、大小和夜間模式都沿用 App 裡最後的設定；碰一下螢幕就結束。
+ * 錶面、時制、秒數、大小、夜間模式和亮度都沿用 App 裡最後的設定；碰一下螢幕就結束。
  */
 class ClockDreamService : DreamService(), LifecycleOwner, SavedStateRegistryOwner {
 
@@ -85,7 +85,8 @@ class ClockDreamService : DreamService(), LifecycleOwner, SavedStateRegistryOwne
 fun DreamClockScreen(settings: ClockSettings) {
     CompositionLocalProvider(LocalClockSettings provides settings) {
         ClockStandbyTheme {
-            StandbyWindowEffect(night = settings.nightMode)
+            // 螢幕保護程式碰一下就結束，不能滑動，沿用在 App 裡調好的亮度
+            StandbyWindowEffect(ClockMath.windowBrightness(settings.nightMode, settings.brightnessLevel))
             val colors = if (settings.nightMode) NightClockColors else DayClockColors
             BoxWithConstraints(
                 Modifier
